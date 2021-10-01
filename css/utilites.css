@@ -47,3 +47,69 @@ a{
     width:40vw;
     height: 7vh;
 }
+.inventory{
+    display: grid;
+    position: absolute;
+    /* background: darkcyan; */
+    top: 0;
+    z-index: 10;
+}
+.inventory-big{
+    grid-template-columns: repeat(8,4vw);
+    height: 7.5vh;
+
+}
+.inventory-small{
+    grid-template-columns: repeat(8,4vw);
+    height: 7.5vh;
+
+}
+@media (max-height:540px){
+    .inventory-big{
+        height: 14vh;
+        grid-template-columns: repeat(8,7vw);
+    }
+    .inventory-small{
+        height: 12vh;
+        grid-template-columns: repeat(8,5.5vw);
+    }
+}
+@media (max-width:1200px) {
+    .inventory-big{
+        grid-template-columns: repeat(8,7vw);
+    }
+    .inventory-small{
+        grid-template-columns: repeat(8,5vw);
+        height: 6vh;
+    }
+}
+@media (max-width:900px) {
+    .inventory-big{
+        grid-template-columns: repeat(8,7vw);
+    }
+    .inventory-small{
+        grid-template-columns: repeat(8,5vw);
+        height: 5vh;
+    }
+}
+
+.inv-item{
+    border: 3px solid gray;
+    box-shadow: inset 2px 2px rgb(77, 77, 77),2px 2px #3f3f3f;
+    height: 100%;
+    width: 100%;
+}
+.inv-item:hover{
+    background: darkcyan;
+    cursor: pointer;
+}
+.taken-inv-item{
+    width: 100%;
+    height: 100%;
+}
+.outline{
+    outline: 4px solid black;
+}
+.picked{
+    background: darkcyan;
+}

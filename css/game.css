@@ -9,8 +9,10 @@
 /* blocks */
 .dirt{
     background: url(../images/dirt.jpg)no-repeat center center/cover;
+    position: relative;
 }
 .grass{
+    position: relative;
     background: url(../images/grass.jpg)no-repeat center 0.1px/cover;
 }
 .sky{
@@ -18,9 +20,11 @@
 }
 .log{
     background: url(../images/log.png)no-repeat center center/cover;
+    position: relative;
 }
 .leaves{
     background: url(../images/leaves.png)no-repeat center center/cover;
+    position: relative;
 }
 /* items */
 .pickaxe{
@@ -34,4 +38,11 @@
 }
 .sword{
     background: url(../images/sword.png)no-repeat center center/cover;
+}
+.number-of-elements{
+    background: gray;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
