@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/game.css">
+    <link rel="stylesheet" href="./css/utilites.css">
+</head>
+<!-- had a problem implementing inner html+= everyother thing stopped working 
+
+s
+
+ -->
+
+<body>
+    <div class="container flex-center">
+        <div class="second-option">
+            <div class="background-div second">
+                <input type="submit" class="main-btn" id="small" value="Small">
+            </div>
+            <div class="background-div second">
+                <input type="submit" class="main-btn" id="big" value="Big">
+            </div>
+        </div>
+        <div class="background-div"><input type="submit" class="main-btn" id="start" value="Start New Game"></div>
+        <div class="background-div"><input type="submit" class="main-btn" id="load" value="Load Game"></div>
+        <div class="background-div"><a class="main-btn" id="creator">creator</a></div>
+    </div>
+    <div class="flex-center">
+        <div class="board display-none">
+            
+        </div>
+    </div>
+    <script src="./js/index.js"></script>
+    <script src="./js/game.js"></script>
+</body>
+
+</html>

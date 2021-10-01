@@ -1,0 +1,27 @@
+.board{
+    height: 100vh;
+    display:grid;
+    background-color: cadetblue;
+}
+.display-none{
+    display: none;
+}
+/* blocks */
+.dirt{
+    background: url(../images/dirt.jpg)no-repeat center center/cover;
+}
+.grass{
+    background: url(../images/grass.jpg)no-repeat center 0.1px/cover;
+}
+.sky{
+    background:#8cbffb;
+}
+.log{
+    background: url(../images/log.png)no-repeat center center/cover;
+}
+.leaves{
+    background: url(../images/leaves.png)no-repeat center center/cover;
+}
+/* .inventory{
+    
+} */

@@ -1,0 +1,16 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+    background:url(../images/start\ background.jpg) no-repeat center center/cover ;
+
+}
+.container .second-option{
+    width: 40vw;
+    display: none;
+}
+.container .second-option .second{
+    width:100%;
+}
+.container .second-option .second:first-child{
+    margin-right: 1vw !important;
+}
