@@ -22,6 +22,16 @@
 .leaves{
     background: url(../images/leaves.png)no-repeat center center/cover;
 }
-/* .inventory{
-    
-} */
+/* items */
+.pickaxe{
+    background: url(../images/pickaxe.png)no-repeat center center/cover;
+}
+.axe{
+    background: url(../images/axe.png)no-repeat center center/cover;
+}
+.shovel{
+    background: url(../images/shovel.png)no-repeat center center/cover;
+}
+.sword{
+    background: url(../images/sword.png)no-repeat center center/cover;
+}
