@@ -62,6 +62,7 @@ function createInventory() {//create inventory
 }
 function choose() {
     if (this.hasChildNodes() && this.children[0] != choosen) {
+        console.log("enter");
         if (this === choosenElementOutLine) {
             this.classList.toggle("outline");
             choosenElementOutLine = null;
