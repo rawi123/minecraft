@@ -12,7 +12,6 @@ function createElements() {
     menu = document.querySelector(".menu")
     healthBar = document.querySelector(".health-bar")
     guide=document.querySelector("#guide")
-    console.log(guide);
 }
 function assignEvenListeners() {//assign event for every button on the home screen
     startGame.addEventListener("click", e => {//open the game file 
@@ -21,7 +20,6 @@ function assignEvenListeners() {//assign event for every button on the home scre
         startGame.style.display = "none"
     })
     loadGame.addEventListener("click", e => {//print comming soon
-        console.log(lastPlace,container.children[lastPlace]);
         if (container.children[lastPlace] != undefined) {
             container.children[lastPlace].remove()
         }
@@ -54,7 +52,6 @@ function assignEvenListeners() {//assign event for every button on the home scre
             container.children[lastPlace].remove()
         }
         let show=document.querySelector(".guideance")
-        console.log(123,show);
         show.classList.toggle("display-none")
     })
     restart.addEventListener("click", e => {
@@ -85,6 +82,7 @@ function importBoard(flag = false) {//does all the job to start the game
         var interval_id = window.setInterval(() => { }, 99999);
         for (var i = 0; i < interval_id; i++)
             window.clearInterval(i);
+        healthBar.innerHTML=""
         createBoard()
     }
 }
@@ -156,6 +154,7 @@ function choose() {
 }
 function createBoard() {
     mainArr.length = 0
+    playerHealth=10;
     dirt.length=0;
     for (let i = 0; i < gameSize[1]; i++) {//add sky
         let temp = []
@@ -430,7 +429,6 @@ function creeateLava(dirtRows, waterPosition) {
         createWaterOrLava(val, "lava")
         dirt.splice(dirt.indexOf(val),1)
     })
-    console.log(dirt);
 }
 function createWaterOrLava(val, type) {
     let new_element = removeAllListeners(val)
@@ -494,28 +492,23 @@ function addToInv(element, item) {
             flag = false;
             let check = objectInInventory(element.classList[0]);
             if (check) {
-                console.log(1);
                 emptyInventory.set(check, emptyInventory.get(check) + 1)
                 check.children[0].children[0].innerText = `${emptyInventory.get(check)}`
                 flag = true
             }
             else if (findFirstEmptyInventory()) {
-                console.log(2);
                 let emptyKey = findFirstEmptyInventory()
                 let div = document.createElement("div")
                 div.classList.add(`${element.classList[0]}`, "taken-inv-item")
                 emptyInventory.set(emptyKey, 1)
                 emptyKey.append(div);
-                console.log(div,emptyKey,emptyInventory.get(emptyKey));
                 div.innerHTML = `<p style="user-select: none;" class="number-of-elements">${emptyInventory.get(emptyKey)}</p>`
                 flag = true
             }
             if (firstWater.includes(element)) {
-                console.log(3);
                 removeAllWaterOrLava(element, element.classList[0]);
             }
             if (flag) {
-                console.log(4);
                 element.style.border = "none"
                 element.setAttribute("class", "sky")
                 let new_element = removeAllListeners(element)
