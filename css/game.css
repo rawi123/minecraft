@@ -24,6 +24,17 @@
     left:0;
     cursor: pointer;
 }
+.health-bar{
+    display: grid;
+    grid-template-rows: repeat(10,5vh);
+    position: absolute;
+    width: 5vw;
+    bottom: 50px;
+    left:0;
+}
+.hearts{
+    background: url(../images/heart.png)no-repeat center center/cover;
+}
 /* blocks */
 .dirt{
     background: url(../images/dirt.jpg)no-repeat center center/cover;
@@ -76,9 +87,21 @@
 .bucket{
     background: url(../images/bucket.png)no-repeat center center/cover;
 }
-.zombie{
-    background: url(../images//zombie.png)no-repeat center center/cover;
-    grid-row: span 2;
+.zombie-head{
+    background: url(../images//zombie\ head\ .jpg)no-repeat center center/cover;
+    /* grid-row: span 2; */
+}
+.head-burn{
+    background:url(../images/head\ burn.png)no-repeat center center/cover;
+}
+.zombie-body{
+    background: url(../images//zombie\ legs.jpg)no-repeat center center/cover;
+}
+.on-fire{
+    background: url(../images/onFire.png)no-repeat center center/cover;
+}
+.meat{
+    background: url(../images/meat.jpg)no-repeat center center/cover;
 }
 .number-of-elements{
     background: gray;

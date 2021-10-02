@@ -64,6 +64,12 @@ a{
     height: 7.5vh;
 
 }
+@media (max-height:800px){
+    .health-bar{
+        width: 4vw;
+        grid-template-rows: repeat(10,6vh);
+    }
+}
 @media (max-height:540px){
     .inventory-big{
         height: 14vh;
@@ -125,7 +131,7 @@ a{
     width: 100%;
 }
 .inv-item:hover{
-    background: darkcyan;
+    background: darkcyan !important;
     cursor: pointer;
 }
 .taken-inv-item{
