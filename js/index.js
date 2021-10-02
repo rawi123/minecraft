@@ -11,6 +11,8 @@ function createElements() {
     restart = document.querySelector(".restart")
     menu = document.querySelector(".menu")
     healthBar = document.querySelector(".health-bar")
+    guide=document.querySelector("#guide")
+    console.log(guide);
 }
 function assignEvenListeners() {//assign event for every button on the home screen
     startGame.addEventListener("click", e => {//open the game file 
@@ -19,6 +21,10 @@ function assignEvenListeners() {//assign event for every button on the home scre
         startGame.style.display = "none"
     })
     loadGame.addEventListener("click", e => {//print comming soon
+        console.log(lastPlace,container.children[lastPlace]);
+        if (container.children[lastPlace] != undefined) {
+            container.children[lastPlace].remove()
+        }
         if (container.children[lastPlace] == undefined) {
             const h2 = document.createElement("h2")
             h2.innerText = "comming soon"
@@ -26,6 +32,7 @@ function assignEvenListeners() {//assign event for every button on the home scre
             h2.style.fontSize = "2.2rem"
             container.appendChild(h2)
         }
+
     })
     creator.addEventListener("click", e => {//open my personal protfolio
         window.open("https://rawi-protfolio.netlify.app/")
@@ -42,6 +49,14 @@ function assignEvenListeners() {//assign event for every button on the home scre
     })
     // gameSize = [50, 14]//first width then height
     // boardSize = 150
+    guide.addEventListener("click",e=>{
+        if (container.children[lastPlace] != undefined) {
+            container.children[lastPlace].remove()
+        }
+        let show=document.querySelector(".guideance")
+        console.log(123,show);
+        show.classList.toggle("display-none")
+    })
     restart.addEventListener("click", e => {
         importBoard(true)
     })
@@ -141,6 +156,7 @@ function choose() {
 }
 function createBoard() {
     mainArr.length = 0
+    dirt.length=0;
     for (let i = 0; i < gameSize[1]; i++) {//add sky
         let temp = []
         for (let j = 0; j < gameSize[0]; j++) {
@@ -270,6 +286,19 @@ function createObjects() {
     createTree(dirtRows, tree);//i send dirt rows because the main arr starts from 0 so no need to add 1
     createStones(dirtRows);
     createWater(dirtRows)
+    createStonesInDirt();
+}
+function createStonesInDirt(){
+    let stones=Math.floor(Math.random()*5+1)
+    if(dirt.length>0){
+        for(let i=0;i<stones;i++){
+            let randomPosition=Math.floor(Math.random()*dirt.length)
+            let newStone=dirt[randomPosition]
+            newStone.setAttribute("class","stone")
+            dirt.splice(dirt.indexOf(newStone),1)
+            reAddEvent(newStone)
+        }
+    }
 }
 function generateTree(dirtRows) {//tree templates
     let tree1 = [["leaves", "leaves", "leaves", "leaves"],
@@ -389,6 +418,7 @@ function createWater(dirtRows) {
     let waterPosition = Math.floor(Math.random() * dirtRows)
     mainArr[waterPosition].map(val => {
         createWaterOrLava(val, "water")
+        dirt.splice(dirt.indexOf(val),1)
     })
     creeateLava(dirtRows, waterPosition);
 }
@@ -398,7 +428,9 @@ function creeateLava(dirtRows, waterPosition) {
         lavaPosition = Math.floor(Math.random() * dirtRows)
     mainArr[lavaPosition].map(val => {
         createWaterOrLava(val, "lava")
+        dirt.splice(dirt.indexOf(val),1)
     })
+    console.log(dirt);
 }
 function createWaterOrLava(val, type) {
     let new_element = removeAllListeners(val)
@@ -695,7 +727,7 @@ function reAddEvent(val) {
             val.addEventListener("mouseout", removeHighlight)
     }
 }
-let startGame; let loadGame; let creator; let secondaryChoice; let container; let small; let big; let board; let inventory; let restart; let menu; let healthBar;//elemtns alreday on the screen(query selector)
+let startGame; let loadGame; let creator; let secondaryChoice; let container; let small; let big; let board; let inventory; let restart; let menu; let healthBar;let guide;//elemtns alreday on the screen(query selector)
 let gameSize;//array of cols and rows
 let mainArr = [];//array displaying board
 let boardSize;//board size in vw

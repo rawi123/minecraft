@@ -113,6 +113,9 @@ a{
         grid-template-columns: repeat(9,5vw);
         height: 6vh;
     }
+    .guideance{
+        font-size: 1rem;
+    }
 }
 @media (max-width:900px) {
     .inventory-big{
