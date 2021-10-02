@@ -6,6 +6,7 @@ function createElements() {
     container = document.querySelector(".container");
     small = document.querySelector("#small");
     big = document.querySelector("#big");
+    extra=document.querySelector("#extra")
     board = document.querySelector(".board")
     inventory = document.querySelector(".inventory")
     restart = document.querySelector(".restart")
@@ -45,6 +46,11 @@ function assignEvenListeners() {//assign event for every button on the home scre
         boardSize = 100
         importBoard();
     })
+    extra.addEventListener("click",e=>{
+        gameSize = [50, 15]//first width then height
+        boardSize = 150
+        importBoard();
+    })
     // gameSize = [50, 14]//first width then height
     // boardSize = 150
     guide.addEventListener("click",e=>{
@@ -66,7 +72,8 @@ function importBoard(flag = false) {//does all the job to start the game
         container.remove()
         board.classList.toggle("display-none");
         board.style.width = boardSize + "vw"
-        let classForInv = boardSize === 100 ? "inventory-big" : "inventory-small"
+        board.style.height="100vh"
+        let classForInv = boardSize >= 100 ? "inventory-big" : "inventory-small"
         inventory.classList.add(`${classForInv}`, "inventory")
         createInventory()
         board.style.gridTemplateColumns = `repeat(${gameSize[0]},1fr)`;
@@ -190,8 +197,9 @@ function addZombie() {
         for (let j = 0; j < mainArr[i].length; j++) {
             let classes = mainArr[i][j].getAttribute("class")
             if (classes.includes("grass") || classes.includes("dirt") || classes.includes("stone") || classes.includes("leaves") || classes.includes("log")) {
-                if (mainArr[i + 1][j].getAttribute("class").includes("sky") && mainArr[i + 2][j].getAttribute("class").includes("sky")) {
-                    genarr.push([i + 1, j])
+                if (mainArr[i+1][j] && mainArr[i+2][j] ) {
+                    if(mainArr[i + 1][j].getAttribute("class").includes("sky") && mainArr[i + 2][j].getAttribute("class").includes("sky"))
+                        genarr.push([i + 1, j])
                 }
             }
         }
@@ -283,7 +291,7 @@ function createObjects() {
     })
     tree = generateTree(dirtRows)
     createTree(dirtRows, tree);//i send dirt rows because the main arr starts from 0 so no need to add 1
-    createStones(dirtRows);
+        createStones(dirtRows);
     createWater(dirtRows)
     createStonesInDirt();
 }
@@ -324,7 +332,7 @@ function generateTree(dirtRows) {//tree templates
     ["sky", "log", "sky"],
     ["sky", "log", "sky"]]
     let tree5;
-    if (boardSize === 100) {
+    if (boardSize >= 100) {
         tree5 = [["leaves", "leaves", "leaves", "leaves", "leaves", "leaves"],
         ["leaves", "leaves", "leaves", "leaves", "leaves", "leaves"],
         ["leaves", "leaves", "leaves", "leaves", "leaves", "leaves"],
@@ -414,21 +422,33 @@ function createStones(dirtRows) {
 
 }
 function createWater(dirtRows) {
-    let waterPosition = Math.floor(Math.random() * dirtRows)
-    mainArr[waterPosition].map(val => {
-        createWaterOrLava(val, "water")
-        dirt.splice(dirt.indexOf(val),1)
-    })
+    let waterPosition = Math.floor(Math.random() * (gameSize[1]-boardSize/25)+boardSize/10)
+    for(let i=0;i<waterPosition;i++){
+        let newLava=dirt[Math.floor(Math.random() * dirt.length)]
+        createWaterOrLava(newLava, "water")
+        dirt.splice(dirt.indexOf(newLava),1)
+    }
+    // creeateLava(dirtRows, waterPosition);
+    // let waterPosition = Math.floor(Math.random() * dirtRows)
+    // mainArr[waterPosition].map(val => {
+    //     createWaterOrLava(val, "water")
+    //     dirt.splice(dirt.indexOf(val),1)
+    // })
     creeateLava(dirtRows, waterPosition);
 }
 function creeateLava(dirtRows, waterPosition) {
-    let lavaPosition = Math.floor(Math.random() * dirtRows)
-    while (lavaPosition === waterPosition)
-        lavaPosition = Math.floor(Math.random() * dirtRows)
-    mainArr[lavaPosition].map(val => {
-        createWaterOrLava(val, "lava")
-        dirt.splice(dirt.indexOf(val),1)
-    })
+    let lavaPosition = Math.floor(Math.random() * (gameSize[1]-boardSize/25)+boardSize/10)
+    for(let i=0;i<lavaPosition;i++){
+        let newLava=dirt[Math.floor(Math.random() * dirt.length)]
+        createWaterOrLava(newLava, "lava")
+        dirt.splice(dirt.indexOf(newLava),1)
+    }
+    // while (lavaPosition === waterPosition)
+    //     lavaPosition = Math.floor(Math.random() * dirtRows)
+    // mainArr[lavaPosition].map(val => {
+    //     createWaterOrLava(val, "lava")
+    //     dirt.splice(dirt.indexOf(val),1)
+    // })
 }
 function createWaterOrLava(val, type) {
     let new_element = removeAllListeners(val)
@@ -720,7 +740,7 @@ function reAddEvent(val) {
             val.addEventListener("mouseout", removeHighlight)
     }
 }
-let startGame; let loadGame; let creator; let secondaryChoice; let container; let small; let big; let board; let inventory; let restart; let menu; let healthBar;let guide;//elemtns alreday on the screen(query selector)
+let startGame; let loadGame; let creator; let secondaryChoice; let container; let small; let big;let extra; let board; let inventory; let restart; let menu; let healthBar;let guide;//elemtns alreday on the screen(query selector)
 let gameSize;//array of cols and rows
 let mainArr = [];//array displaying board
 let boardSize;//board size in vw

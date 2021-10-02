@@ -27,7 +27,7 @@
 .health-bar{
     display: grid;
     grid-template-rows: repeat(10,5vh);
-    position: absolute;
+    position: fixed;
     width: 5vw;
     bottom: 50px;
     left:0;
@@ -107,7 +107,7 @@
 .number-of-elements{
     background: gray;
     color: white;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
 }

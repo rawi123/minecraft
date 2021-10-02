@@ -1,5 +1,7 @@
 body{
     background:url(../images/start\ background.jpg)no-repeat center center/cover ;
+    height: 100vh;
+    overflow-y: hidden;
 }
 @font-face {
     font-family: minecraft;
@@ -49,7 +51,7 @@ a{
 }
 .inventory{
     display: grid;
-    position: absolute;
+    position: fixed;
     /* background: darkcyan; */
     top: 0;
     z-index: 10;
