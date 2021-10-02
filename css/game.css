@@ -4,7 +4,25 @@
     background-color: cadetblue;
 }
 .display-none{
-    display: none;
+    display: none !important;
+}
+.restart{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url(../images/restart.png)no-repeat center center/cover;
+    bottom: 0;
+    left:0;
+    cursor: pointer;
+}
+.menu{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url(../images/menu.png)no-repeat center center/cover;
+    top: 0;
+    left:0;
+    cursor: pointer;
 }
 /* blocks */
 .dirt{
@@ -26,6 +44,22 @@
     background: url(../images/leaves.png)no-repeat center center/cover;
     position: relative;
 }
+.stone{
+    background: url(../images/block.jpg)no-repeat center center/cover;
+    position: relative;
+}
+.water{
+    background: url(../images/water.jpg)no-repeat center center/cover;
+    position: relative;
+}
+.lava{
+    background: url(../images/lava.jpg)no-repeat center center/cover;
+    position: relative;
+}
+.obsidian{
+    background: url(../images/obsidian.png)no-repeat center center/cover;
+    position: relative;
+}
 /* items */
 .pickaxe{
     background: url(../images/pickaxe.png)no-repeat center center/cover;
@@ -38,6 +72,13 @@
 }
 .sword{
     background: url(../images/sword.png)no-repeat center center/cover;
+}
+.bucket{
+    background: url(../images/bucket.png)no-repeat center center/cover;
+}
+.zombie{
+    background: url(../images//zombie.png)no-repeat center center/cover;
+    grid-row: span 2;
 }
 .number-of-elements{
     background: gray;

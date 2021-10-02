@@ -55,22 +55,22 @@ a{
     z-index: 10;
 }
 .inventory-big{
-    grid-template-columns: repeat(8,4vw);
+    grid-template-columns: repeat(9,4vw);
     height: 7.5vh;
 
 }
 .inventory-small{
-    grid-template-columns: repeat(8,4vw);
+    grid-template-columns: repeat(9,4vw);
     height: 7.5vh;
 
 }
 @media (max-height:540px){
     .inventory-big{
         height: 14vh;
-        grid-template-columns: repeat(8,7vw);
+        grid-template-columns: repeat(9,7vw);
     }
     .inventory-small{
-        height: 8vh !important;
+        height: 9vh !important;
         grid-template-columns: repeat(8,3.5vw) !important;
     }
 }
@@ -93,7 +93,7 @@ a{
         border: none !important;
     }
     .inventory-big{
-        grid-template-columns: repeat(8,5vw) !important;
+        grid-template-columns: repeat(9,5vw) !important;
     }
     .inventory-small{
         height: 7vh !important;
@@ -101,19 +101,19 @@ a{
 }
 @media (max-width:1200px) {
     .inventory-big{
-        grid-template-columns: repeat(8,7vw);
+        grid-template-columns: repeat(9,7vw);
     }
     .inventory-small{
-        grid-template-columns: repeat(8,5vw);
+        grid-template-columns: repeat(9,5vw);
         height: 6vh;
     }
 }
 @media (max-width:900px) {
     .inventory-big{
-        grid-template-columns: repeat(8,7vw);
+        grid-template-columns: repeat(9,7vw);
     }
     .inventory-small{
-        grid-template-columns: repeat(8,5vw);
+        grid-template-columns: repeat(9,5vw);
         height: 5vh;
     }
 }
