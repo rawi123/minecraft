@@ -101,6 +101,7 @@
     background: url(../images/onFire.png)no-repeat center center/cover;
 }
 .meat{
+    position: relative;
     background: url(../images/meat.jpg)no-repeat center center/cover;
 }
 .number-of-elements{

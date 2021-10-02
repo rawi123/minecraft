@@ -450,7 +450,7 @@ function removeDirt() {
 function removeStone() {
     addToInv(this, "pickaxe")
 }
-function removeWater() {
+function removeWater() {//water lava or meat
     addToInv(this, "bucket")
 }
 function addToInv(element, item) {
@@ -458,27 +458,32 @@ function addToInv(element, item) {
         let y=mainArr.find(val=>val.includes(element))
         let x=y.indexOf(element)
         y=mainArr.indexOf(y)
-        if(mainArr[y+1][x].getAttribute("class").includes("sky")||mainArr[y-1][x].getAttribute("class").includes("sky")||mainArr[y][x+1].getAttribute("class").includes("sky")||mainArr[y][x-1].getAttribute("class").includes("sky")){
+        if(!accsess||mainArr[y+1][x].getAttribute("class").includes("sky")||mainArr[y-1][x].getAttribute("class").includes("sky")||mainArr[y][x+1].getAttribute("class").includes("sky")||mainArr[y][x-1].getAttribute("class").includes("sky")){
             flag = false;
             let check = objectInInventory(element.classList[0]);
             if (check) {
+                console.log(1);
                 emptyInventory.set(check, emptyInventory.get(check) + 1)
                 check.children[0].children[0].innerText = `${emptyInventory.get(check)}`
                 flag = true
             }
             else if (findFirstEmptyInventory()) {
+                console.log(2);
                 let emptyKey = findFirstEmptyInventory()
                 let div = document.createElement("div")
                 div.classList.add(`${element.classList[0]}`, "taken-inv-item")
                 emptyInventory.set(emptyKey, 1)
                 emptyKey.append(div);
+                console.log(div,emptyKey,emptyInventory.get(emptyKey));
                 div.innerHTML = `<p style="user-select: none;" class="number-of-elements">${emptyInventory.get(emptyKey)}</p>`
                 flag = true
             }
             if (firstWater.includes(element)) {
+                console.log(3);
                 removeAllWaterOrLava(element, element.classList[0]);
             }
             if (flag) {
+                console.log(4);
                 element.style.border = "none"
                 element.setAttribute("class", "sky")
                 let new_element = removeAllListeners(element)
@@ -550,7 +555,6 @@ function applyElement(element, classToAdd,flag=false) {
     if(!flag)
         element.setAttribute("class", `${classToAdd}`)
     let newAmmout = emptyInventory.get(choosenElementToApply) - 1;
-    console.log(newAmmout);
     if (newAmmout === 0) {
         choosenElementToApply.children[0].setAttribute("class", "sky taken-inv-item")
         choosenElementToApply.children[0].remove();
@@ -576,7 +580,6 @@ function checkObsidian(waterOrLava) {
             if (choosenElementToApply.children[0].classList[0] == "lava") {
                 let new_element = removeAllListeners(waterOrLava)
                 applyElement(new_element, "obsidian")
-
             }
             break;
         }
@@ -623,12 +626,16 @@ function applyWaterOrLava(element, type, oppositeType) {
                     setTimeout(() => {
                         let legs = removeAllListeners(mainArr[x - 1][y])
                         legs.setAttribute("class", "lava")
-                        legs.addEventListener("click", removeWater)
                         legs.addEventListener("mouseover", highlightWater)
                         legs.addEventListener("mouseout", removeHighlight)
+                        legs.addEventListener("click", removeWater)
+                        legs.addEventListener("click", apply)
                         setTimeout(() => {
                             let head = removeAllListeners(mainArr[x - 2][y])
                             head.setAttribute("class", "lava")
+                            head.addEventListener("mouseover", highlightWater)
+                            head.addEventListener("mouseout", removeHighlight)
+                            head.addEventListener("click", removeWater)
                             head.addEventListener("click", apply)
                         }, 300);
                     }, secs);
@@ -708,6 +715,7 @@ let choosenElementToApply;//choosen element
 let choosenClass; let choosenElementOutLine
 let firstWater = [];//to pick up all the waters
 const invSpace = 9;//inv size 9 is the max in one row how ever wont be able to put in the top part if less
+const accsess=false;//put false if you want to access everything from everywhere
 createElements();
 let lastPlace = container.children.length
 assignEvenListeners()
