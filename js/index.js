@@ -15,19 +15,25 @@ function assignEvenListeners() {//assign event for every button on the home scre
         startGame.parentElement.style.display = "none"
         startGame.style.display = "none"
     })
-    loadGame.addEventListener("click", e => {//pring comming soon
-        container.innerHTML += "<h1 style='color: green;'>Comming Soon</h1>;";
+    loadGame.addEventListener("click", e => {//print comming soon
+        if(container.children[lastPlace]==undefined){
+            const h2=document.createElement("h2")
+            h2.innerText="comming soon"
+            h2.style.color="green"
+            h2.style.fontSize="2.2rem"
+            container.appendChild(h2)
+        }
     })
     creator.addEventListener("click", e => {//open my personal protfolio
         window.open("https://rawi-protfolio.netlify.app/")
     })
     small.addEventListener("click", e => {
-        gameSize = [10, 12]//first width then height
+        gameSize = [13, 14]//first width then height
         boardSize = 50
         importBoard();
     })
     big.addEventListener("click", e => {
-        gameSize = [18, 14]//first width then height
+        gameSize = [24, 14]//first width then height
         boardSize = 100
         importBoard();
     })
@@ -62,8 +68,7 @@ function createInventory() {//create inventory
 }
 function choose() {
     if (this.hasChildNodes() && this.children[0] != choosen) {
-        console.log("enter");
-        if (this === choosenElementOutLine) {
+        if (this === choosenElementToApply) {
             this.classList.toggle("outline");
             choosenElementOutLine = null;
             choosenElementToApply = null;
@@ -88,6 +93,7 @@ function choose() {
             if (choosenElementOutLine)
                 choosenElementOutLine.classList.remove("outline")
             choosenElementOutLine = this;
+            choosenElementToApply=this;
             this.classList.add("outline")
             choosen = null; choosenClass = null;
         }
@@ -106,7 +112,6 @@ function createBoard() {
         mainArr.unshift(temp)
     }
     createObjects()
-
 }
 function createObjects() {
     let dirtRows = Math.floor((Math.random() * (boardSize / 25) + 1))//number of dirt rows
@@ -128,9 +133,8 @@ function createObjects() {
     })
     tree = generateTree(dirtRows)
     createTree(dirtRows, tree);//i send dirt rows because the main arr starts from 0 so no need to add 1
-    // createStones(dirtRows);
+    createStones(dirtRows);
 }
-
 function generateTree(dirtRows) {//tree templates
     let tree1 = [["leaves", "leaves", "leaves", "leaves"],
     ["leaves", "leaves", "leaves", "leaves"],
@@ -208,6 +212,10 @@ function createTree(floor, tree) {//draw any tree from tree templates
         start--;
     }
 }
+function createStones(dirtRows){
+    let stonesNumber=Math.floor(Math.random()*7+1)
+    console.log(stonesNumber);
+}
 function highlightTree() {
     if (choosenClass === "axe")
         this.style.border = "3px solid black"
@@ -239,7 +247,6 @@ function addToInv(element, item) {
             emptyInventory.set(emptyKey, 1)
             emptyKey.append(div);
             div.innerHTML = `<p style="user-select: none;" class="number-of-elements">${emptyInventory.get(emptyKey)}</p>`
-            div.addEventListener("click", chooseElemnt)
             flag = true
         }
         if (flag) {
@@ -269,33 +276,42 @@ function findFirstEmptyInventory() {
     }
     return toReturn
 }
-function chooseElemnt() {
-    choosenElementToApply = this.parentElement
+function findFirstTakenInventory(){
+    let toReturn = false;
+    for (let [key, val] of emptyInventory) {
+        if (key.children.length >0)
+            toReturn = key
+    }
+    return toReturn
 }
 function apply() {
-    console.log(this);
     if (choosenElementToApply) {
         if ([...this.classList].includes("sky")) {
             this.setAttribute("class", `${choosenElementToApply.children[0].classList[0]}`)
+            let newAmmout = emptyInventory.get(choosenElementToApply) - 1;
+            if (newAmmout === 0) {
+                choosenElementToApply.children[0].setAttribute("class", "sky taken-inv-item")
+                choosenElementToApply.children[0].remove();
+                emptyInventory.set(choosenElementToApply, 0)
+                if (choosenElementOutLine)
+                choosenElementOutLine.classList.remove("outline")
+                choosenElementToApply = null
+                let temp=findFirstTakenInventory()
+                if(temp){
+                    choosenElementOutLine=temp
+                    choosenElementToApply=temp
+                    temp.classList.add("outline")
+                }
+            }
+            else {
+                choosenElementToApply.children[0].children[0].innerText = `${newAmmout}`
+                emptyInventory.set(choosenElementToApply, newAmmout)
+            }
+            reAddEvent(this)
+
         }
-        let newAmmout = emptyInventory.get(choosenElementToApply) - 1;
-        if (newAmmout === 0) {
-            choosenElementToApply.children[0].setAttribute("class", "sky taken-inv-item")
-            choosenElementToApply.children[0].remove();
-            // var new_element = element.cloneNode(true);
-            // element.parentNode.replaceChild(new_element, element);
-            emptyInventory.set(choosenElementToApply, 0)
-        }
-        else {
-            choosenElementToApply.children[0].children[0].innerText = `${newAmmout}`
-            emptyInventory.set(choosenElementToApply, newAmmout)
-        }
-        reAddEvent(this)
-        if (choosenElementOutLine)
-            choosenElementOutLine.classList.remove("outline")
-        choosenElementToApply = null
+
     }
-    console.log(this);
 }
 function reAddEvent(val) {
     switch (val.classList[0]) {
@@ -327,11 +343,13 @@ let mainArr = [];//array displaying board
 let boardSize;//board size in vw
 let grass = [];//grass blocks
 let dirt = [];//dirt blocks
+let stones=[];
 let inventoryArr = []; let emptyInventory = new Map();
 let choosen;//choosen inventory item
 let choosenElementToApply;//choosen element
 let choosenClass; let choosenElementOutLine
 const invSpace = 8;//inv size
 createElements();
+let lastPlace=container.children.length
 assignEvenListeners()
 
