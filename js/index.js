@@ -43,7 +43,7 @@ function assignEvenListeners() {//assign event for every button on the home scre
         importBoard();
     })
     big.addEventListener("click", e => {
-        gameSize = [20, 14]//first width then height
+        gameSize = [22, 14]//first width then height
         boardSize = 100
         importBoard();
     })
