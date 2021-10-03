@@ -134,9 +134,15 @@ function hpAdd() {
         if (playerHealth < 10) {
             let heart = document.createElement("div")
             heart.classList.add("hearts")
+            
             healthBar.appendChild(heart)
             playerHealth++;
+            healthBar.style.transform = "scale(1.1)";
+            setTimeout(() => {
+                healthBar.style.transform = "scale(1)";
+            }, 200);
         }
+        
     }
 }
 function choose() {
@@ -245,9 +251,9 @@ function addZombie() {
     }
 }
 function playerGettingHit() {
-    board.style.transform = "scale(1.1)";
+    healthBar.style.transform = "scale(1.1)";
     setTimeout(() => {
-        board.style.transform = "scale(1)";
+        healthBar.style.transform = "scale(1)";
     }, 200);
     zombieHitting.play();
     playerHealth--;
@@ -462,7 +468,7 @@ function createWater(dirtRows) {
     creeateLava(dirtRows, waterPosition);
 }
 function creeateLava(dirtRows, waterPosition) {
-    let lavaPosition = Math.floor(Math.random() * (gameSize[1] - boardSize / 25) + boardSize / 10)
+    let lavaPosition = Math.min(dirt.length,Math.floor(Math.random() * (gameSize[1] - boardSize / 25) + boardSize / 10))
     for (let i = 0; i < lavaPosition; i++) {
         let newLava = dirt[Math.floor(Math.random() * dirt.length)]
         createWaterOrLava(newLava, "lava")
