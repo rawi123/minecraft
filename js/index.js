@@ -33,7 +33,6 @@ function assignEvenListeners() {//assign event for every button on the home scre
             h2.style.fontSize = "2.2rem"
             container.appendChild(h2)
         }
-
     })
     creator.addEventListener("click", e => {//open my personal protfolio
         window.open("https://rawi-protfolio.netlify.app/")

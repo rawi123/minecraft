@@ -3,6 +3,9 @@ body{
     height: 100vh;
     overflow-y: hidden;
 }
+html{
+    overflow-y: hidden;
+}
 @font-face {
     font-family: minecraft;
     src: url(../font/Minecraft.ttf);
@@ -67,6 +70,7 @@ a{
 }
 .phone{
     display: none;
+    z-index: -1000;
 }
 @media screen and (orientation:portrait){
     .phone{
@@ -85,8 +89,8 @@ a{
         border-radius: 5px;
         padding: 8px;
     }
-    .body{
-        overflow: hidden;
+    body,html{
+        overflow-y: hidden;
     }
 }
 @media screen and (max-height:800px){
