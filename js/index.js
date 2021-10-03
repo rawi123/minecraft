@@ -16,6 +16,7 @@ function createElements() {
     haveAccessBtn=document.querySelector("#have-access")
 }
 function assignEvenListeners() {//assign event for every button on the home screen
+    
     startGame.addEventListener("click", e => {//open the game file 
         secondaryChoice.style.display = "flex"
         startGame.parentElement.style.display = "none"
@@ -52,8 +53,6 @@ function assignEvenListeners() {//assign event for every button on the home scre
         boardSize = 150
         importBoard();
     })
-    // gameSize = [50, 14]//first width then height
-    // boardSize = 150
     guide.addEventListener("click",e=>{
         if (container.children[lastPlace] != undefined) {
             container.children[lastPlace].remove()
@@ -72,6 +71,7 @@ function assignEvenListeners() {//assign event for every button on the home scre
 
         haveAccessBtn.value=accsess?"D":"A"
     })
+
 }
 function importBoard(flag = false) {//does all the job to start the game
     if ([...document.body.children].includes(container)) {
@@ -207,7 +207,7 @@ function addZombie() {
         for (let j = 0; j < mainArr[i].length; j++) {
             let classes = mainArr[i][j].getAttribute("class")
             if (classes.includes("grass") || classes.includes("dirt") || classes.includes("stone") || classes.includes("leaves") || classes.includes("log")) {
-                if (mainArr[i+1][j] && mainArr[i+2][j] ) {
+                if (mainArr[i+1][j] && mainArr[i+2][j]&&mainArr[i][j-1] ) {
                     if(mainArr[i + 1][j].getAttribute("class").includes("sky") && mainArr[i + 2][j].getAttribute("class").includes("sky"))
                         genarr.push([i + 1, j])
                 }

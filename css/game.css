@@ -30,7 +30,7 @@
     position: fixed;
     width: 5vw;
     bottom: 50px;
-    left:0;
+    left:0; 
 }
 .hearts{
     background: url(../images/heart.png)no-repeat center center/cover;
