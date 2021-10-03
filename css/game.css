@@ -2,7 +2,7 @@
     height: 100vh;
     display:grid;
     background-color: cadetblue;
-    transition: all 0.2s ease;
+
 }
 .display-none{
     display: none !important;
@@ -32,6 +32,7 @@
     width: 5vw;
     bottom: 50px;
     left:0;
+    transition: all 0.2s ease;
 }
 .hearts{
     background: url(../images/heart.png)no-repeat center center/cover;

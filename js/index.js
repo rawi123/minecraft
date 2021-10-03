@@ -609,8 +609,11 @@ function findFirstEmptyInventory() {
 function findFirstTakenInventory() {
     let toReturn = false;
     for (let [key, val] of emptyInventory) {
-        if (key.children.length > 0)
-            toReturn = key
+        if (key.children.length > 0){
+            if(!(key.children[0].getAttribute("class").includes("meat"))){
+                toReturn = key  
+            }
+        }
     }
     return toReturn
 }
