@@ -16,12 +16,13 @@ function createElements() {
     haveAccessBtn = document.querySelector("#have-access")
 }
 function assignEvenListeners() {//assign event for every button on the home screen
-
+    let intervalIsGoingOn = false;
     startGame.addEventListener("click", e => {//open the game file 
         secondaryChoice.style.display = "flex"
         startGame.parentElement.style.display = "none"
         startGame.style.display = "none"
     })
+
     loadGame.addEventListener("click", e => {//print comming soon
         if (container.children[lastPlace] != undefined) {
             container.children[lastPlace].remove()
@@ -34,24 +35,29 @@ function assignEvenListeners() {//assign event for every button on the home scre
             container.appendChild(h2)
         }
     })
+
     creator.addEventListener("click", e => {//open my personal protfolio
         window.open("https://rawi-protfolio.netlify.app/")
     })
+
     small.addEventListener("click", e => {
         gameSize = [13, 14]//first width then height
         boardSize = 50
         importBoard();
     })
+
     big.addEventListener("click", e => {
         gameSize = [22, 14]//first width then height
         boardSize = 100
         importBoard();
     })
+
     extra.addEventListener("click", e => {
         gameSize = [50, 15]//first width then height
         boardSize = 150
         importBoard();
     })
+
     guide.addEventListener("click", e => {
         if (container.children[lastPlace] != undefined) {
             container.children[lastPlace].remove()
@@ -59,21 +65,24 @@ function assignEvenListeners() {//assign event for every button on the home scre
         let show = document.querySelector(".guideance")
         show.classList.toggle("display-none")
     })
+
     restart.addEventListener("click", e => {
         importBoard(true)
     })
     menu.addEventListener("click", e => {
         location.reload()
     })
+
     haveAccessBtn.addEventListener("click", e => {
         accsess = accsess ? false : true
 
         haveAccessBtn.value = accsess ? "D" : "A"
     })
-    let intervalIsGoingOn = false;
+
     healthBar.addEventListener("mouseover", function () {
         healthBar.style.zIndex= "-1000";
     })
+
     healthBar.addEventListener("mouseout",function () {
         if (intervalIsGoingOn) return;
         intervalIsGoingOn = true;
@@ -116,12 +125,12 @@ function createInventory() {//create inventory
         let div = document.createElement("div")
         div.classList.add("inv-item")
         if (temp[i]) {
-            inventoryArr.push(div)
             let item = document.createElement("div")
+            inventoryArr.push(div)
             item.classList.add(`${temp[i]}`, "taken-inv-item")
             div.appendChild(item)
         }
-        else { emptyInventory.set(div, 0) }
+        else {emptyInventory.set(div, 0)}
         choosen = inventoryArr[4]
         div.addEventListener("click", choose)
         inventory.append(div)
@@ -132,7 +141,6 @@ function hpAdd() {
         if (playerHealth < 10) {
             let heart = document.createElement("div")
             heart.classList.add("hearts")
-            
             healthBar.appendChild(heart)
             playerHealth++;
             healthBar.style.transform = "scale(1.1)";
@@ -143,18 +151,20 @@ function hpAdd() {
         
     }
 }
-function choose() {
+function declareElementApplyAndOutLine(val){//set chosen outline and apply to val
+    choosenElementOutLine = val;
+    choosenElementToApply = val;
+}
+function choose() {//chose item from inventory and assign all the needed variables, if its meat add health and remove it if its weapon reomve out line if double click on the same item toogle outline and choosen
     if (this.hasChildNodes() && this.children[0] != choosen) {
         if ([...this.children[0].classList].includes("meat")) {
-            choosenElementToApply = this;
-            choosenElementOutLine = this;
+            declareElementApplyAndOutLine(this)
             applyElement(null, null, true)
             hpAdd()
         }
         else if (this === choosenElementToApply) {
             this.classList.toggle("outline");
-            choosenElementOutLine = null;
-            choosenElementToApply = null;
+            declareElementApplyAndOutLine(null)
             return
         }
         else if (inventoryArr.includes(this)) {
@@ -166,8 +176,7 @@ function choose() {
             this.style.background = "darkcyan"
             choosen = this.children[0]
             choosenClass = choosen.classList[0]
-            choosenElementOutLine = null;
-            choosenElementToApply = null;
+            declareElementApplyAndOutLine(null)
         }
         else {
             if (choosen) {
@@ -175,14 +184,13 @@ function choose() {
             }
             if (choosenElementOutLine)
                 choosenElementOutLine.classList.remove("outline")
-            choosenElementOutLine = this;
-            choosenElementToApply = this;
+            declareElementApplyAndOutLine(this)
             this.classList.add("outline")
             choosen = null; choosenClass = null;
         }
     }
 }
-function createBoard() {
+function createBoard() {//create board adding the needed even listeners and applying zombie on/off
     mainArr.length = 0
     playerHealth = 10;
     dirt.length = 0;
@@ -192,7 +200,7 @@ function createBoard() {
             const sky = document.createElement("div")
             board.append(sky)
             sky.classList.add("sky")
-            sky.addEventListener("click", apply)
+            reAddEvent(sky,true)
             temp[j] = sky
         }
         mainArr.unshift(temp)
@@ -209,37 +217,36 @@ function createBoard() {
         }
     }, 30000);
 }
-function setHealth() {
+function setHealth() {//create health bar
     for (let i = 0; i < playerHealth; i++) {
         let heart = document.createElement("div")
         heart.classList.add("hearts")
         healthBar.appendChild(heart)
     }
 }
-function addZombie() {
+function addZombie() {//add zombie with health 4 on an avilable place if there are no places avilable dont add
     zombieleath = 4;
     let genarr = []//j width i height
     for (let i = 0; i < mainArr.length; i++) {
         for (let j = 0; j < mainArr[i].length; j++) {
             let classes = mainArr[i][j].getAttribute("class")
-            if (classes.includes("grass") || classes.includes("dirt") || classes.includes("stone") || classes.includes("leaves") || classes.includes("log")) {
-                if (mainArr[i + 1][j] && mainArr[i + 2][j]) {
-                    if (mainArr[i + 1][j].getAttribute("class").includes("sky") && mainArr[i + 2][j].getAttribute("class").includes("sky"))
+            if ((classes.includes("grass") || classes.includes("dirt") || classes.includes("stone") || classes.includes("leaves") || classes.includes("log"))
+                &&(mainArr[i + 1][j] && mainArr[i + 2][j])
+                &&(mainArr[i + 1][j].getAttribute("class").includes("sky") && mainArr[i + 2][j].getAttribute("class").includes("sky"))) {
                         genarr.push([i + 1, j])
-                }
             }
         }
     }
-    if (genarr.length > 1) {
+    if (genarr.length > 0) {
         let place = genarr[Math.floor(Math.random() * genarr.length)]
         zombiePlace = place
         let legs = removeAllListeners(mainArr[place[0]][place[1]])
-        legs.setAttribute("class", "zombie-body")
         let head = removeAllListeners(mainArr[place[0] + 1][place[1]])
+        legs.setAttribute("class", "zombie-body")
         head.setAttribute("class", "zombie-head")
         legs.addEventListener("click", damage)
-        zombieSound[Math.floor(Math.random() * 3)].play()
         head.addEventListener("click", damage)
+        zombieSound[Math.floor(Math.random() * 3)].play()
         soundPlaying = setInterval(() => {
             zombieSound[Math.floor(Math.random() * 3)].play()
         }, 5000);
@@ -248,7 +255,7 @@ function addZombie() {
         }, 2000);
     }
 }
-function playerGettingHit() {
+function playerGettingHit() {//hit player apply healthbar animation and remove health if the player is dead alert and restart game
     healthBar.style.transform = "scale(1.1)";
     setTimeout(() => {
         healthBar.style.transform = "scale(1)";
@@ -260,71 +267,61 @@ function playerGettingHit() {
         window.alert("you lost!")
         location.reload()
     }
-
 }
-function damage() {
+function killZombieAndPlaceMeat(){//as the function name says :) - zombie have a place saved in zombiePlace array
+    let legs = removeAllListeners(mainArr[zombiePlace[0]][zombiePlace[1]])
+    let head = removeAllListeners(mainArr[zombiePlace[0] + 1][zombiePlace[1]])
+    legs.setAttribute("class", "meat")
+    head.setAttribute("class", "sky")
+    reAddEvent(head,true)
+    reAddEvent(legs)
+}
+function damage() {//damage zombie and check if he is dead if so apply killzombie and place meat
     if (choosenClass == "sword") {
         zombieHit[Math.floor(Math.random() * 3)].play()
         zombieleath--;
         if (zombieleath === 0) {
             zombieOnScreen = false
-            clearInterval(soundPlaying)
-            clearInterval(zombieDammaging)
-            let legs = removeAllListeners(mainArr[zombiePlace[0]][zombiePlace[1]])
-            legs.setAttribute("class", "meat")
-            legs.addEventListener("click", removeWater)
-            legs.addEventListener("mouseover", highlightWater)
-            legs.addEventListener("mouseout", removeHighlight)
-            let head = removeAllListeners(mainArr[zombiePlace[0] + 1][zombiePlace[1]])
-            head.setAttribute("class", "sky")
-            head.addEventListener("click", apply)
+            clearZombieSounds()
+            killZombieAndPlaceMeat()
         }
     }
     else if (choosenElementToApply) {
         if ([...choosenElementToApply.children[0].classList].includes("lava")) {
             zombieOnScreen = false
             zombieHit[Math.floor(Math.random() * 3)].play()
-            clearInterval(soundPlaying)
-            clearInterval(zombieDammaging)
             mainArr[zombiePlace[0]][zombiePlace[1]].setAttribute("class", "on-fire")
+            clearZombieSounds()
             setTimeout(() => {
-                let legs = removeAllListeners(mainArr[zombiePlace[0]][zombiePlace[1]])
-                legs.setAttribute("class", "meat")
-                legs.addEventListener("click", removeWater)
-                legs.addEventListener("mouseover", highlightWater)
-                legs.addEventListener("mouseout", removeHighlight)
-                let head = removeAllListeners(mainArr[zombiePlace[0] + 1][zombiePlace[1]])
-                head.setAttribute("class", "sky")
-                head.addEventListener("click", apply)
+                killZombieAndPlaceMeat()
             }, 1000);
         }
     }
 }
-function createObjects() {
+function createObjects() {//create all objects on board-random
     let dirtRows = Math.floor((Math.random() * (boardSize / 30) + 2))//number of dirt rows
-    for (let i = 0; i < dirtRows; i++) {//create dirt
-        mainArr[i].map(val => {
-            val.setAttribute("class", "dirt")
-            dirt.push(val)
-            val.addEventListener("click", removeDirt)
-            val.addEventListener("mouseover", highlightDirt)
-            val.addEventListener("mouseout", removeHighlight)
-        })
-    }
-    mainArr[dirtRows].map(val => {
-        val.setAttribute("class", "grass")
-        grass.push(val)
-        val.addEventListener("click", removeDirt)
-        val.addEventListener("mouseover", highlightDirt)
-        val.addEventListener("mouseout", removeHighlight)
-    })
-    tree = generateTree(dirtRows)
+    let tree = generateTree(dirtRows)//generate a tree
+    createDirt(dirtRows)
     createTree(dirtRows, tree);//i send dirt rows because the main arr starts from 0 so no need to add 1
     createStones(dirtRows);
     createWater(dirtRows)
     createStonesInDirt();
 }
-function createStonesInDirt() {
+function createDirt(dirtRows){//create dirt while reciving how many rows of it and push every dirt applyed to arr so we can place water lava and stone
+    for (let i = 0; i < dirtRows; i++) {//create dirt
+        mainArr[i].map(val => {
+            val.setAttribute("class", "dirt")
+            dirt.push(val)
+            reAddEvent(val)
+        })
+    }
+    mainArr[dirtRows].map(val => {
+        val.setAttribute("class", "grass")
+        grass.push(val)
+        reAddEvent(val)
+    })
+}
+function createStonesInDirt() {//create random number of stones in dirt//after createing water and lava -whats left
     let stones = Math.floor(Math.random() * (dirt.length))
     if (dirt.length > 0) {
         for (let i = 0; i < stones; i++) {
@@ -392,15 +389,13 @@ function generateTree(dirtRows) {//tree templates
     }
 }
 function createTree(dirtRows, tree, flag = false) {//draw any tree from tree templates
+    let row = Math.floor(Math.random() * mainArr[0].length);
     if (boardSize >= 100 && !flag) {
         if (Math.floor(Math.random() * 1 + 1) === 1) {
-            //Math.floor(Math.random()*2)
             let tree2 = generateTree(dirtRows)
             createTree(dirtRows, tree2, true)
         }
     }
-
-    let row = Math.floor(Math.random() * mainArr[0].length);
     if (row > mainArr[0].length - tree[0].length) {
         row = mainArr[0].length - tree[0].length
     }
@@ -411,9 +406,7 @@ function createTree(dirtRows, tree, flag = false) {//draw any tree from tree tem
         for (let j = 0; j < tree[i].length; j++) {
             mainArr[start][row].setAttribute("class", `${tree[i][j]}`)
             if (![...mainArr[start][row].classList].includes("sky")) {
-                mainArr[start][row].addEventListener("click", cutTree)
-                mainArr[start][row].addEventListener("mouseover", highlightTree)
-                mainArr[start][row].addEventListener("mouseout", removeHighlight)
+                reAddEvent(mainArr[start][row])
             }
             row++;
         }
@@ -421,26 +414,24 @@ function createTree(dirtRows, tree, flag = false) {//draw any tree from tree tem
         start--;
     }
 }
-function createStones(dirtRows) {
+function createStones(dirtRows) {//create stones above grass
+    let saveDirtRow = dirtRows;
+    let temp = 0;
     let stonesNumber = Math.floor(Math.random() * boardSize / 10 + 1)//stone numbers
     let num = parseInt(Math.max(stonesNumber / 2, stonesNumber % 3, 2));//number of stones in every row
     let randomRow = Math.floor(Math.random() * (mainArr[0].length - num - 1))//row starting 
     let trees = findEmptySpaceFromEnd(dirtRows, randomRow)
     if (randomRow + trees > mainArr[0].length)
         randomRow -= trees
-    let saveDirtRow = dirtRows;
-    let temp = 0;
     let saveRow = randomRow;
     while (stonesNumber > 0) {
         let toUse = mainArr[saveDirtRow + 1][randomRow]
         if ([...toUse.classList].includes("sky")) {
             toUse.setAttribute("class", "stone")
             stonesNumber--;
-            stones.push(toUse)
-            toUse.addEventListener("click", removeStone)
-            toUse.addEventListener("mouseover", highlightStone)
-            toUse.addEventListener("mouseout", removeHighlight)
             temp++
+            stones.push(toUse)
+            reAddEvent(toUse)
         }
         randomRow++;
         if (temp === num) {
@@ -451,14 +442,14 @@ function createStones(dirtRows) {
     }
 
 }
-function createWater(dirtRows) {
+function createWater(dirtRows) {//create random water in dirt and remove it from dirt array
     let waterPosition = Math.floor(Math.random() * (gameSize[1] - boardSize / 25) + boardSize / 10)
     for (let i = 0; i < waterPosition; i++) {
         let newLava = dirt[Math.floor(Math.random() * dirt.length)]
         createWaterOrLava(newLava, "water")
         dirt.splice(dirt.indexOf(newLava), 1)
     }
-    // creeateLava(dirtRows, waterPosition);
+    // creeateLava(dirtRows, waterPosition);//remove this comment if you want the water to be in one stright line and comment above
     // let waterPosition = Math.floor(Math.random() * dirtRows)
     // mainArr[waterPosition].map(val => {
     //     createWaterOrLava(val, "water")
@@ -466,33 +457,31 @@ function createWater(dirtRows) {
     // })
     creeateLava(dirtRows, waterPosition);
 }
-function creeateLava(dirtRows, waterPosition) {
+function creeateLava(dirtRows, waterPosition) {//create random lava in dirt but it depends on water number-so the max is not excceding and remove it from dirt array
     let lavaPosition = Math.min(dirt.length,Math.floor(Math.random() * (gameSize[1] - boardSize / 25) + boardSize / 10))
     for (let i = 0; i < lavaPosition; i++) {
         let newLava = dirt[Math.floor(Math.random() * dirt.length)]
         createWaterOrLava(newLava, "lava")
         dirt.splice(dirt.indexOf(newLava), 1)
     }
-    // while (lavaPosition === waterPosition)
+    // while (lavaPosition === waterPosition)//remove this comment if you want the lava to be in one stright line and comment above
     //     lavaPosition = Math.floor(Math.random() * dirtRows)
     // mainArr[lavaPosition].map(val => {
     //     createWaterOrLava(val, "lava")
     //     dirt.splice(dirt.indexOf(val),1)
     // })
 }
-function createWaterOrLava(val, type) {
+function createWaterOrLava(val, type) {//creaate water or lava in an elemnt
     let new_element = removeAllListeners(val)
     new_element.setAttribute("class", type)
-    new_element.addEventListener("mouseover", highlightWater)
-    new_element.addEventListener("mouseout", removeHighlight)
-    new_element.addEventListener("click", removeWater)
+    reAddEvent(new_element)
 }
-function removeAllListeners(val) {
-    let temp = mainArr.find(value => value.includes(val))
-    var new_element = val.cloneNode(true);
-    mainArr[mainArr.indexOf(temp)][temp.indexOf(val)] = new_element
-    val.parentNode.replaceChild(new_element, val);
-    return new_element
+function removeAllListeners(val) {//clone and add to mainarr instead of the element that was there
+    let temp = mainArr.find(value => value.includes(val))//temp will be the line that includes val
+    var new_element = val.cloneNode(true);//clone val
+    mainArr[mainArr.indexOf(temp)][temp.indexOf(val)] = new_element//push it ti main arr by using temp cordinations
+    val.parentNode.replaceChild(new_element, val);//replace it in html
+    return new_element//return new element
 }
 function findEmptySpaceFromEnd(dirtRows, randomRow) {//return trees or stones in the way
     let temp = 0;
@@ -504,33 +493,34 @@ function findEmptySpaceFromEnd(dirtRows, randomRow) {//return trees or stones in
     }
     return temp;
 }
-function highlightTree() {
-    if (choosenClass === "axe")
-        this.style.border = "3px solid black"
+function highLight(item,value){//highlight an item on hover if the choosen class is right
+    if(choosenClass===item){
+        value.style.border = "3px solid black"
+    }
 }
-function highlightDirt() {
-    if (choosenClass === "shovel")
-        this.style.border = "3px solid black"
+function highlightTree() {//send to highlight with the item that highlight tree
+    highLight("axe",this)
 }
-function highlightStone() {
-    if (choosenClass === "pickaxe")
-        this.style.border = "3px solid black"
+function highlightDirt() {//send to highlight with the item that highlight dirt
+    highLight("shovel",this)
 }
-function highlightWater() {
-    if (choosenClass === "bucket")
-        this.style.border = "3px solid black"
+function highlightStone() {//send to highlight with the item that highlight stone
+    highLight("pickaxe",this)
 }
-function removeHighlight(e = false) { (this || e).style.border = "none" }
-function cutTree() {
+function highlightWater() {//send to highlight with the item that highlight water
+    highLight("bucket",this)
+}
+function removeHighlight(e = false) { (this || e).style.border = "none" }//remove highlight -used on all elemnts on mouse out
+function cutTree() {//remov element and add to inv if it is possible using add to inv - sending the right class the player should picked - choosen
     addToInv(this, "axe")
 }
-function removeDirt() {
+function removeDirt() {//remov element and add to inv if it is possible using add to inv - sending the right class the player should picked - choosen
     addToInv(this, "shovel")
 }
-function removeStone() {
+function removeStone() {//remov element and add to inv if it is possible using add to inv - sending the right class the player should picked - choosen
     addToInv(this, "pickaxe")
 }
-function removeWater() {//water lava or meat
+function removeWater() {//water lava or meat //remov element and add to inv if it is possible using add to inv - sending the right class the player should picked - choosen
     addToInv(this, "bucket")
 }
 function addToInv(element, item) {
@@ -562,7 +552,7 @@ function addToInv(element, item) {
                 element.style.border = "none"
                 element.setAttribute("class", "sky")
                 let new_element = removeAllListeners(element)
-                new_element.addEventListener("click", apply)
+                reAddEvent(new_element,true)
             }
         }
 
@@ -581,6 +571,7 @@ function removeAllWaterOrLava(element, type) {
             while ([...toUse.classList].includes(type)) {
                 toUse.setAttribute("class", "sky")
                 let new_element = removeAllListeners(toUse)
+                reAddEvent(new_element,true)
                 x--;
                 toUse = mainArr[x - 1][y]
             }
@@ -642,8 +633,7 @@ function applyElement(element, classToAdd, flag = false) {
         choosenElementToApply = null
         let temp = findFirstTakenInventory()
         if (temp) {
-            choosenElementOutLine = temp
-            choosenElementToApply = temp
+            declareElementApplyAndOutLine(temp)
             temp.classList.add("outline")
         }
     }
@@ -652,7 +642,7 @@ function applyElement(element, classToAdd, flag = false) {
         emptyInventory.set(choosenElementToApply, newAmmout)
     }
 }
-function checkObsidian(waterOrLava) {
+function checkObsidian(waterOrLava) {//check for obsidian and apply it on clicking right on lava with water or the other way round
     switch (waterOrLava.classList[0]) {
         case "water": {
             if (choosenElementToApply.children[0].classList[0] == "lava") {
@@ -665,7 +655,6 @@ function checkObsidian(waterOrLava) {
             if (choosenElementToApply.children[0].classList[0] == "water") {
                 let new_element = removeAllListeners(waterOrLava)
                 applyElement(new_element, "obsidian")
-
             }
             break;
         }
@@ -684,6 +673,7 @@ function applyWaterOrLava(element, type, oppositeType) {
             let tempSec = 100;
             while ([...toUse.classList].includes("sky") || [...toUse.classList].includes(`${type}`) || [...toUse.classList].includes(`zombie-head`)) {
                 if ([...toUse.classList].includes(`zombie-head`)) {
+                    zombieOnScreen = false
                     killZombie(tempSec)
                     break;
                 }
@@ -697,24 +687,18 @@ function applyWaterOrLava(element, type, oppositeType) {
             function killZombie(secs) {
                 setTimeout(() => {
                     zombieHit[Math.floor(Math.random() * 3)].play()
-                    clearInterval(soundPlaying)
-                    clearInterval(zombieDammaging)
+                    clearZombieSounds();
                     mainArr[x - 2][y].setAttribute("class", "on-fire")
                     mainArr[x - 1][y].setAttribute("class", "head-burn")
                     setTimeout(() => {
                         let legs = removeAllListeners(mainArr[x - 1][y])
                         legs.setAttribute("class", "lava")
-                        legs.addEventListener("mouseover", highlightWater)
-                        legs.addEventListener("mouseout", removeHighlight)
-                        legs.addEventListener("click", removeWater)
-                        legs.addEventListener("click", apply)
+                        console.log(legs,true);
+                        reAddEvent(legs,true)
                         setTimeout(() => {
                             let head = removeAllListeners(mainArr[x - 2][y])
                             head.setAttribute("class", "lava")
-                            head.addEventListener("mouseover", highlightWater)
-                            head.addEventListener("mouseout", removeHighlight)
-                            head.addEventListener("click", removeWater)
-                            head.addEventListener("click", apply)
+                            reAddEvent(head,true)
                         }, 300);
                     }, secs);
                 }, 300);
@@ -734,42 +718,44 @@ function applyWaterOrLava(element, type, oppositeType) {
         }
     }
 }
-function reAddEvent(val) {
+function clearZombieSounds(){//clear intervals of zombie sound
+    clearInterval(soundPlaying)
+    clearInterval(zombieDammaging)
+}
+function reeAddEventToElement(val,onclick,mouseOver){//takes 3 elements val- elemnts to ad listeners to - onclick function and mouse over function and apply it while adding remove highlight for all elemtns
+    val.addEventListener("click", onclick)
+    val.addEventListener("mouseover", mouseOver)
+    val.addEventListener("mouseout", removeHighlight)
+}
+function reAddEvent(val,flag=false) {//apply the right listeners for each of the classes with the help of reeAddEventToElement function if flag is true it will add apply
     switch (val.classList[0]) {
         case "leaves":
-            val.addEventListener("click", cutTree)
-            val.addEventListener("mouseover", highlightTree)
-            val.addEventListener("mouseout", removeHighlight)
+            reeAddEventToElement(val,cutTree,highlightTree);
             break;
         case "log":
-            val.addEventListener("click", cutTree)
-            val.addEventListener("mouseover", highlightTree)
-            val.addEventListener("mouseout", removeHighlight)
+            reeAddEventToElement(val,cutTree,highlightTree);
             break;
         case "dirt":
-            val.addEventListener("click", removeDirt)
-            val.addEventListener("mouseover", highlightDirt)
-            val.addEventListener("mouseout", removeHighlight)
+            reeAddEventToElement(val,removeDirt,highlightDirt)
             break;
         case "grass":
-            val.addEventListener("click", removeDirt)
-            val.addEventListener("mouseover", highlightDirt)
-            val.addEventListener("mouseout", removeHighlight)
+            reeAddEventToElement(val,removeDirt,highlightDirt)
             break;
         case "stone":
-            val.addEventListener("click", removeStone)
-            val.addEventListener("mouseover", highlightStone)
-            val.addEventListener("mouseout", removeHighlight)
+            reeAddEventToElement(val,removeStone,highlightStone)
             break;
         case "water":
-            val.addEventListener("click", removeWater)
-            val.addEventListener("mouseover", highlightWater)
-            val.addEventListener("mouseout", removeHighlight)
+            reeAddEventToElement(val,removeWater,highlightWater)
             break;
         case "lava":
-            val.addEventListener("click", removeWater)
-            val.addEventListener("mouseover", highlightWater)
-            val.addEventListener("mouseout", removeHighlight)
+            reeAddEventToElement(val,removeWater,highlightWater)
+            break;
+        case "meat":
+            reeAddEventToElement(val,removeWater,highlightWater)
+            break;
+    }
+    if(flag){
+        val.addEventListener("click", apply)
     }
 }
 let startGame; let loadGame; let creator; let secondaryChoice; let container; let small; let big; let extra; let board; let inventory; let restart; let menu; let healthBar; let guide;//elemtns alreday on the screen(query selector)
