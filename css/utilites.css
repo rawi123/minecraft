@@ -74,11 +74,15 @@ a{
 @media (max-height:540px){
     .inventory-big{
         height: 10vh;
-        grid-template-columns: repeat(9,7vw);
+        grid-template-columns: repeat(9,4vw) !important;
     }
     .inventory-small{
         height: 5vh !important;
         grid-template-columns: repeat(9,3vw) !important;
+    }
+    #have-access{
+        height: 10vh;
+        font-size: 1rem;
     }
 }
 @media only screen and (min-height:541px) and (max-height:750px){
