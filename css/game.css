@@ -107,7 +107,7 @@
 .number-of-elements{
     background: gray;
     color: white;
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
 }
