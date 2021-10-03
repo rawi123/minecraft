@@ -13,6 +13,7 @@ function createElements() {
     menu = document.querySelector(".menu")
     healthBar = document.querySelector(".health-bar")
     guide=document.querySelector("#guide")
+    haveAccessBtn=document.querySelector("#have-access")
 }
 function assignEvenListeners() {//assign event for every button on the home screen
     startGame.addEventListener("click", e => {//open the game file 
@@ -66,6 +67,11 @@ function assignEvenListeners() {//assign event for every button on the home scre
     menu.addEventListener("click", e => {
         location.reload()
     })
+    haveAccessBtn.addEventListener("click",e=>{
+        accsess=accsess?false:true
+
+        haveAccessBtn.value=accsess?"D":"A"
+    })
 }
 function importBoard(flag = false) {//does all the job to start the game
     if ([...document.body.children].includes(container)) {
@@ -80,6 +86,7 @@ function importBoard(flag = false) {//does all the job to start the game
         board.style.gridTemplateRows = `repeat(${gameSize[1]},1fr)`;
         restart.classList.toggle("display-none")
         menu.classList.toggle("display-none")
+        haveAccessBtn.classList.toggle("display-none")
     }
     if (!flag) {
         createBoard()
@@ -178,9 +185,12 @@ function createBoard() {
     setHealth()
     setTimeout(() => {
         addZombie()
+        zombieOnScreen=true;
     }, 4000);
     setInterval(() => {
-        addZombie();
+        if(!zombieOnScreen){
+            addZombie();
+        }
     }, 30000);
 }
 function setHealth() {
@@ -238,6 +248,7 @@ function damage() {
         zombieHit[Math.floor(Math.random() * 3)].play()
         zombieleath--;
         if (zombieleath === 0) {
+            zombieOnScreen=false
             dead = true
             clearInterval(soundPlaying)
             clearInterval(zombieDammaging)
@@ -253,6 +264,7 @@ function damage() {
     }
     else if (choosenElementToApply) {
         if ([...choosenElementToApply.children[0].classList].includes("lava")) {
+            zombieOnScreen=false
             dead = true;
             zombieHit[Math.floor(Math.random() * 3)].play()
             clearInterval(soundPlaying)
@@ -741,6 +753,8 @@ function reAddEvent(val) {
     }
 }
 let startGame; let loadGame; let creator; let secondaryChoice; let container; let small; let big;let extra; let board; let inventory; let restart; let menu; let healthBar;let guide;//elemtns alreday on the screen(query selector)
+let haveAccessBtn;
+let accsess=false;//put false if you want to access everything from everywhere
 let gameSize;//array of cols and rows
 let mainArr = [];//array displaying board
 let boardSize;//board size in vw
@@ -753,6 +767,7 @@ let soundPlaying;
 let playerHealth = 10;
 let zombieHit = [new Audio('../images/zombie\ hit\ 1.m4a'), new Audio('../images/zombie\ hit\ 2.m4a'), new Audio('../images/zombie\ hit\ 3.m4a')];
 let zombieSound = [new Audio('../images/zombie\ sound\ 1.m4a'), new Audio('../images/zombie\ sound\ 2.m4a'), new Audio('../images/zombie\ sound\ 3.m4a')]
+let zombieOnScreen=false;
 let inventoryArr = []; let emptyInventory = new Map();
 let healthArr = []
 let choosen;//choosen inventory item
@@ -760,7 +775,6 @@ let choosenElementToApply;//choosen element
 let choosenClass; let choosenElementOutLine
 let firstWater = [];//to pick up all the waters
 const invSpace = 9;//inv size 9 is the max in one row how ever wont be able to put in the top part if less
-const accsess=false;//put false if you want to access everything from everywhere
 createElements();
 let lastPlace = container.children.length
 assignEvenListeners()
