@@ -52,7 +52,6 @@ a{
 .inventory{
     display: grid;
     position: fixed;
-    /* background: darkcyan; */
     top: 0;
     z-index: 10;
 }
@@ -79,7 +78,7 @@ a{
     }
     .inventory-small{
         height: 9vh !important;
-        grid-template-columns: repeat(8,3.5vw) !important;
+        grid-template-columns: repeat(9,3.5vw) !important;
     }
 }
 @media only screen and (min-height:541px) and (max-height:750px){

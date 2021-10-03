@@ -112,7 +112,7 @@
     left: 0;
 }
 #have-access{
-    position:absolute;
+    position:fixed;
     width:6vw;
     height: 5vh;
     top: 0;
