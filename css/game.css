@@ -7,7 +7,7 @@
     display: none !important;
 }
 .restart{
-    position: absolute;
+    position: fixed;
     width: 50px;
     height: 50px;
     background: url(../images/restart.png)no-repeat center center/cover;
