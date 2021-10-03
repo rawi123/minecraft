@@ -332,8 +332,9 @@ function createStonesInDirt() {
         for (let i = 0; i < stones; i++) {
             let randomPosition = Math.floor(Math.random() * dirt.length)
             let newStone = dirt[randomPosition]
-            newStone.setAttribute("class", "stone")
             dirt.splice(dirt.indexOf(newStone), 1)
+            newStone.setAttribute("class", "stone")
+            newStone=removeAllListeners(newStone)
             reAddEvent(newStone)
         }
     }
