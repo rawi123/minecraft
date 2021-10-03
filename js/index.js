@@ -245,6 +245,10 @@ function addZombie() {
     }
 }
 function playerGettingHit() {
+    board.style.transform = "scale(1.1)";
+    setTimeout(() => {
+        board.style.transform = "scale(1)";
+    }, 200);
     zombieHitting.play();
     playerHealth--;
     healthBar.lastChild.remove()
@@ -255,13 +259,11 @@ function playerGettingHit() {
 
 }
 function damage() {
-    let dead = false
     if (choosenClass == "sword") {
         zombieHit[Math.floor(Math.random() * 3)].play()
         zombieleath--;
         if (zombieleath === 0) {
             zombieOnScreen = false
-            dead = true
             clearInterval(soundPlaying)
             clearInterval(zombieDammaging)
             let legs = removeAllListeners(mainArr[zombiePlace[0]][zombiePlace[1]])
@@ -277,7 +279,6 @@ function damage() {
     else if (choosenElementToApply) {
         if ([...choosenElementToApply.children[0].classList].includes("lava")) {
             zombieOnScreen = false
-            dead = true;
             zombieHit[Math.floor(Math.random() * 3)].play()
             clearInterval(soundPlaying)
             clearInterval(zombieDammaging)
@@ -320,7 +321,7 @@ function createObjects() {
     createStonesInDirt();
 }
 function createStonesInDirt() {
-    let stones = Math.floor(Math.random() * 5 + 1)
+    let stones = Math.floor(Math.random() * (dirt.length))
     if (dirt.length > 0) {
         for (let i = 0; i < stones; i++) {
             let randomPosition = Math.floor(Math.random() * dirt.length)
@@ -714,7 +715,6 @@ function applyWaterOrLava(element, type, oppositeType) {
                 setTimeout(() => {
                     elementToUse.setAttribute("class", `${type}`)
                     reAddEvent(elementToUse)
-
                 }, secs);
             }
             setTimeout(() => {
@@ -774,6 +774,8 @@ let grass = [];//grass blocks
 let dirt = [];//dirt blocks
 let stones = [];
 let zombiePlace = [];
+let waterNumber;
+let lavaNumber;
 let zombieHitting = new Audio('../images/zombie\ hitting.m4a')
 let soundPlaying;
 let playerHealth = 10;

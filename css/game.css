@@ -2,6 +2,7 @@
     height: 100vh;
     display:grid;
     background-color: cadetblue;
+    transition: all 0.2s ease;
 }
 .display-none{
     display: none !important;
