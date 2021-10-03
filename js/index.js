@@ -6,17 +6,17 @@ function createElements() {
     container = document.querySelector(".container");
     small = document.querySelector("#small");
     big = document.querySelector("#big");
-    extra=document.querySelector("#extra")
+    extra = document.querySelector("#extra")
     board = document.querySelector(".board")
     inventory = document.querySelector(".inventory")
     restart = document.querySelector(".restart")
     menu = document.querySelector(".menu")
     healthBar = document.querySelector(".health-bar")
-    guide=document.querySelector("#guide")
-    haveAccessBtn=document.querySelector("#have-access")
+    guide = document.querySelector("#guide")
+    haveAccessBtn = document.querySelector("#have-access")
 }
 function assignEvenListeners() {//assign event for every button on the home screen
-    
+
     startGame.addEventListener("click", e => {//open the game file 
         secondaryChoice.style.display = "flex"
         startGame.parentElement.style.display = "none"
@@ -48,16 +48,16 @@ function assignEvenListeners() {//assign event for every button on the home scre
         boardSize = 100
         importBoard();
     })
-    extra.addEventListener("click",e=>{
+    extra.addEventListener("click", e => {
         gameSize = [50, 15]//first width then height
         boardSize = 150
         importBoard();
     })
-    guide.addEventListener("click",e=>{
+    guide.addEventListener("click", e => {
         if (container.children[lastPlace] != undefined) {
             container.children[lastPlace].remove()
         }
-        let show=document.querySelector(".guideance")
+        let show = document.querySelector(".guideance")
         show.classList.toggle("display-none")
     })
     restart.addEventListener("click", e => {
@@ -66,19 +66,31 @@ function assignEvenListeners() {//assign event for every button on the home scre
     menu.addEventListener("click", e => {
         location.reload()
     })
-    haveAccessBtn.addEventListener("click",e=>{
-        accsess=accsess?false:true
+    haveAccessBtn.addEventListener("click", e => {
+        accsess = accsess ? false : true
 
-        haveAccessBtn.value=accsess?"D":"A"
+        haveAccessBtn.value = accsess ? "D" : "A"
     })
-
+    let intervalIsGoingOn = false;
+    healthBar.addEventListener("mouseover", function () {
+        healthBar.style.zIndex= "-1000";
+    })
+    healthBar.addEventListener("mouseout",function () {
+        if (intervalIsGoingOn) return;
+        intervalIsGoingOn = true;
+        setTimeout(function () {
+            healthBar.style.zIndex = "1";
+            console.log(healthBar.style.display);
+            intervalIsGoingOn = false;
+        }, 2000);
+    });
 }
 function importBoard(flag = false) {//does all the job to start the game
     if ([...document.body.children].includes(container)) {
         container.remove()
         board.classList.toggle("display-none");
         board.style.width = boardSize + "vw"
-        board.style.height="100vh"
+        board.style.height = "100vh"
         let classForInv = boardSize >= 100 ? "inventory-big" : "inventory-small"
         inventory.classList.add(`${classForInv}`, "inventory")
         createInventory()
@@ -96,7 +108,7 @@ function importBoard(flag = false) {//does all the job to start the game
         var interval_id = window.setInterval(() => { }, 99999);
         for (var i = 0; i < interval_id; i++)
             window.clearInterval(i);
-        healthBar.innerHTML=""
+        healthBar.innerHTML = ""
         createBoard()
     }
 }
@@ -117,9 +129,9 @@ function createInventory() {//create inventory
         inventory.append(div)
     }
 }
-function hpAdd(){
-    for(let i=0;i<2;i++){
-        if(playerHealth<10){
+function hpAdd() {
+    for (let i = 0; i < 2; i++) {
+        if (playerHealth < 10) {
             let heart = document.createElement("div")
             heart.classList.add("hearts")
             healthBar.appendChild(heart)
@@ -130,9 +142,9 @@ function hpAdd(){
 function choose() {
     if (this.hasChildNodes() && this.children[0] != choosen) {
         if ([...this.children[0].classList].includes("meat")) {
-            choosenElementToApply=this;
-            choosenElementOutLine=this;
-            applyElement(null,null,true)
+            choosenElementToApply = this;
+            choosenElementOutLine = this;
+            applyElement(null, null, true)
             hpAdd()
         }
         else if (this === choosenElementToApply) {
@@ -168,8 +180,8 @@ function choose() {
 }
 function createBoard() {
     mainArr.length = 0
-    playerHealth=10;
-    dirt.length=0;
+    playerHealth = 10;
+    dirt.length = 0;
     for (let i = 0; i < gameSize[1]; i++) {//add sky
         let temp = []
         for (let j = 0; j < gameSize[0]; j++) {
@@ -185,10 +197,10 @@ function createBoard() {
     setHealth()
     setTimeout(() => {
         addZombie()
-        zombieOnScreen=true;
+        zombieOnScreen = true;
     }, 4000);
     setInterval(() => {
-        if(!zombieOnScreen){
+        if (!zombieOnScreen) {
             addZombie();
         }
     }, 30000);
@@ -207,8 +219,8 @@ function addZombie() {
         for (let j = 0; j < mainArr[i].length; j++) {
             let classes = mainArr[i][j].getAttribute("class")
             if (classes.includes("grass") || classes.includes("dirt") || classes.includes("stone") || classes.includes("leaves") || classes.includes("log")) {
-                if (mainArr[i+1][j] && mainArr[i+2][j]&&mainArr[i][j-1] ) {
-                    if(mainArr[i + 1][j].getAttribute("class").includes("sky") && mainArr[i + 2][j].getAttribute("class").includes("sky"))
+                if (mainArr[i + 1][j] && mainArr[i + 2][j] && mainArr[i][j - 1]) {
+                    if (mainArr[i + 1][j].getAttribute("class").includes("sky") && mainArr[i + 2][j].getAttribute("class").includes("sky"))
                         genarr.push([i + 1, j])
                 }
             }
@@ -248,7 +260,7 @@ function damage() {
         zombieHit[Math.floor(Math.random() * 3)].play()
         zombieleath--;
         if (zombieleath === 0) {
-            zombieOnScreen=false
+            zombieOnScreen = false
             dead = true
             clearInterval(soundPlaying)
             clearInterval(zombieDammaging)
@@ -264,7 +276,7 @@ function damage() {
     }
     else if (choosenElementToApply) {
         if ([...choosenElementToApply.children[0].classList].includes("lava")) {
-            zombieOnScreen=false
+            zombieOnScreen = false
             dead = true;
             zombieHit[Math.floor(Math.random() * 3)].play()
             clearInterval(soundPlaying)
@@ -303,18 +315,18 @@ function createObjects() {
     })
     tree = generateTree(dirtRows)
     createTree(dirtRows, tree);//i send dirt rows because the main arr starts from 0 so no need to add 1
-        createStones(dirtRows);
+    createStones(dirtRows);
     createWater(dirtRows)
     createStonesInDirt();
 }
-function createStonesInDirt(){
-    let stones=Math.floor(Math.random()*5+1)
-    if(dirt.length>0){
-        for(let i=0;i<stones;i++){
-            let randomPosition=Math.floor(Math.random()*dirt.length)
-            let newStone=dirt[randomPosition]
-            newStone.setAttribute("class","stone")
-            dirt.splice(dirt.indexOf(newStone),1)
+function createStonesInDirt() {
+    let stones = Math.floor(Math.random() * 5 + 1)
+    if (dirt.length > 0) {
+        for (let i = 0; i < stones; i++) {
+            let randomPosition = Math.floor(Math.random() * dirt.length)
+            let newStone = dirt[randomPosition]
+            newStone.setAttribute("class", "stone")
+            dirt.splice(dirt.indexOf(newStone), 1)
             reAddEvent(newStone)
         }
     }
@@ -434,11 +446,11 @@ function createStones(dirtRows) {
 
 }
 function createWater(dirtRows) {
-    let waterPosition = Math.floor(Math.random() * (gameSize[1]-boardSize/25)+boardSize/10)
-    for(let i=0;i<waterPosition;i++){
-        let newLava=dirt[Math.floor(Math.random() * dirt.length)]
+    let waterPosition = Math.floor(Math.random() * (gameSize[1] - boardSize / 25) + boardSize / 10)
+    for (let i = 0; i < waterPosition; i++) {
+        let newLava = dirt[Math.floor(Math.random() * dirt.length)]
         createWaterOrLava(newLava, "water")
-        dirt.splice(dirt.indexOf(newLava),1)
+        dirt.splice(dirt.indexOf(newLava), 1)
     }
     // creeateLava(dirtRows, waterPosition);
     // let waterPosition = Math.floor(Math.random() * dirtRows)
@@ -449,11 +461,11 @@ function createWater(dirtRows) {
     creeateLava(dirtRows, waterPosition);
 }
 function creeateLava(dirtRows, waterPosition) {
-    let lavaPosition = Math.floor(Math.random() * (gameSize[1]-boardSize/25)+boardSize/10)
-    for(let i=0;i<lavaPosition;i++){
-        let newLava=dirt[Math.floor(Math.random() * dirt.length)]
+    let lavaPosition = Math.floor(Math.random() * (gameSize[1] - boardSize / 25) + boardSize / 10)
+    for (let i = 0; i < lavaPosition; i++) {
+        let newLava = dirt[Math.floor(Math.random() * dirt.length)]
         createWaterOrLava(newLava, "lava")
-        dirt.splice(dirt.indexOf(newLava),1)
+        dirt.splice(dirt.indexOf(newLava), 1)
     }
     // while (lavaPosition === waterPosition)
     //     lavaPosition = Math.floor(Math.random() * dirtRows)
@@ -517,10 +529,10 @@ function removeWater() {//water lava or meat
 }
 function addToInv(element, item) {
     if (choosenClass === item) {
-        let y=mainArr.find(val=>val.includes(element))
-        let x=y.indexOf(element)
-        y=mainArr.indexOf(y)
-        if(!accsess||mainArr[y+1][x].getAttribute("class").includes("sky")||mainArr[y-1][x].getAttribute("class").includes("sky")||mainArr[y][x+1].getAttribute("class").includes("sky")||mainArr[y][x-1].getAttribute("class").includes("sky")){
+        let y = mainArr.find(val => val.includes(element))
+        let x = y.indexOf(element)
+        y = mainArr.indexOf(y)
+        if (!accsess || mainArr[y + 1][x].getAttribute("class").includes("sky") || mainArr[y - 1][x].getAttribute("class").includes("sky") || mainArr[y][x + 1].getAttribute("class").includes("sky") || mainArr[y][x - 1].getAttribute("class").includes("sky")) {
             flag = false;
             let check = objectInInventory(element.classList[0]);
             if (check) {
@@ -608,8 +620,8 @@ function apply() {
         }
     }
 }
-function applyElement(element, classToAdd,flag=false) {
-    if(!flag)
+function applyElement(element, classToAdd, flag = false) {
+    if (!flag)
         element.setAttribute("class", `${classToAdd}`)
     let newAmmout = emptyInventory.get(choosenElementToApply) - 1;
     if (newAmmout === 0) {
@@ -752,9 +764,9 @@ function reAddEvent(val) {
             val.addEventListener("mouseout", removeHighlight)
     }
 }
-let startGame; let loadGame; let creator; let secondaryChoice; let container; let small; let big;let extra; let board; let inventory; let restart; let menu; let healthBar;let guide;//elemtns alreday on the screen(query selector)
+let startGame; let loadGame; let creator; let secondaryChoice; let container; let small; let big; let extra; let board; let inventory; let restart; let menu; let healthBar; let guide;//elemtns alreday on the screen(query selector)
 let haveAccessBtn;
-let accsess=false;//put false if you want to access everything from everywhere
+let accsess = false;//put false if you want to access everything from everywhere
 let gameSize;//array of cols and rows
 let mainArr = [];//array displaying board
 let boardSize;//board size in vw
@@ -767,7 +779,7 @@ let soundPlaying;
 let playerHealth = 10;
 let zombieHit = [new Audio('../images/zombie\ hit\ 1.m4a'), new Audio('../images/zombie\ hit\ 2.m4a'), new Audio('../images/zombie\ hit\ 3.m4a')];
 let zombieSound = [new Audio('../images/zombie\ sound\ 1.m4a'), new Audio('../images/zombie\ sound\ 2.m4a'), new Audio('../images/zombie\ sound\ 3.m4a')]
-let zombieOnScreen=false;
+let zombieOnScreen = false;
 let inventoryArr = []; let emptyInventory = new Map();
 let healthArr = []
 let choosen;//choosen inventory item
