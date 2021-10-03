@@ -73,7 +73,7 @@ a{
 }
 @media (max-height:540px){
     .inventory-big{
-        height: 14vh;
+        height: 10vh;
         grid-template-columns: repeat(9,7vw);
     }
     .inventory-small{
