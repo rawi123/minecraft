@@ -1,3 +1,24 @@
+let startGame, loadGame, creator, secondaryChoice, container, small, big, extra, board, inventory, restart, menu, healthBar, guide,//elemtns alreday on the screen(query selector)
+haveAccessBtn,
+accsess = false,//put false if you want to access everything from everywhere
+gameSize,//array of cols and rows
+mainArr = [],//array displaying board
+boardSize,//board size in vw
+grass = [],//grass blocks
+dirt = [],//dirt blocks
+stones = [],
+waterNumber,lavaNumber,
+zombiePlace = [],zombieHitting = new Audio('../images/zombie\ hitting.m4a'),soundPlaying,playerHealth = 10,zombieOnScreen = false,
+zombieHit = [new Audio('../images/zombie\ hit\ 1.m4a'), new Audio('../images/zombie\ hit\ 2.m4a'), new Audio('../images/zombie\ hit\ 3.m4a')],
+zombieSound = [new Audio('../images/zombie\ sound\ 1.m4a'), new Audio('../images/zombie\ sound\ 2.m4a'), new Audio('../images/zombie\ sound\ 3.m4a')],
+inventoryArr = [],emptyInventory = new Map(),
+healthArr = [],
+choosen,//choosen inventory item
+choosenElementToApply,//choosen element
+choosenClass, choosenElementOutLine,
+firstWater = [],//to pick up all the waters
+intervalIsGoingOn = false;//interval for health bar remove on hover (zindex)
+const invSpace = 9;//inv size 9 is the max in one row how ever wont be able to put in the top part if less
 function createElements() {
     startGame = document.querySelector("#start");
     loadGame = document.querySelector("#load");
@@ -16,13 +37,11 @@ function createElements() {
     haveAccessBtn = document.querySelector("#have-access")
 }
 function assignEvenListeners() {//assign event for every button on the home screen
-    let intervalIsGoingOn = false;
     startGame.addEventListener("click", e => {//open the game file 
         secondaryChoice.style.display = "flex"
         startGame.parentElement.style.display = "none"
         startGame.style.display = "none"
     })
-
     loadGame.addEventListener("click", e => {//print comming soon
         if (container.children[lastPlace] != undefined) {
             container.children[lastPlace].remove()
@@ -78,7 +97,6 @@ function assignEvenListeners() {//assign event for every button on the home scre
 
         haveAccessBtn.value = accsess ? "D" : "A"
     })
-
     healthBar.addEventListener("mouseover", function () {
         healthBar.style.zIndex= "-1000";
     })
@@ -87,7 +105,7 @@ function assignEvenListeners() {//assign event for every button on the home scre
         if (intervalIsGoingOn) return;
         intervalIsGoingOn = true;
         setTimeout(function () {
-            healthBar.style.zIndex = "1";
+            healthBar.style.zIndex = "100";
             intervalIsGoingOn = false;
         }, 1000);
     });
@@ -111,9 +129,11 @@ function importBoard(flag = false) {//does all the job to start the game
         createBoard()
     }
     else {
+        healthBar.style.zIndex= "1";
+        intervalIsGoingOn = false;
         document.body.children[0].children[0].innerHTML = ""
-        var interval_id = window.setInterval(() => { }, 99999);
-        for (var i = 0; i < interval_id; i++)
+        let interval_id = window.setInterval(() => { }, 99999);
+        for (let i = 0; i < interval_id; i++)
             window.clearInterval(i);
         healthBar.innerHTML = ""
         createBoard()
@@ -426,7 +446,7 @@ function createStones(dirtRows) {//create stones above grass
     let saveRow = randomRow;
     while (stonesNumber > 0) {
         let toUse = mainArr[saveDirtRow + 1][randomRow]
-        if ([...toUse.classList].includes("sky")) {
+        if (toUse&&[...toUse.classList].includes("sky")) {
             toUse.setAttribute("class", "stone")
             stonesNumber--;
             temp++
@@ -478,7 +498,7 @@ function createWaterOrLava(val, type) {//creaate water or lava in an elemnt
 }
 function removeAllListeners(val) {//clone and add to mainarr instead of the element that was there
     let temp = mainArr.find(value => value.includes(val))//temp will be the line that includes val
-    var new_element = val.cloneNode(true);//clone val
+    let new_element = val.cloneNode(true);//clone val
     mainArr[mainArr.indexOf(temp)][temp.indexOf(val)] = new_element//push it ti main arr by using temp cordinations
     val.parentNode.replaceChild(new_element, val);//replace it in html
     return new_element//return new element
@@ -758,31 +778,7 @@ function reAddEvent(val,flag=false) {//apply the right listeners for each of the
         val.addEventListener("click", apply)
     }
 }
-let startGame; let loadGame; let creator; let secondaryChoice; let container; let small; let big; let extra; let board; let inventory; let restart; let menu; let healthBar; let guide;//elemtns alreday on the screen(query selector)
-let haveAccessBtn;
-let accsess = false;//put false if you want to access everything from everywhere
-let gameSize;//array of cols and rows
-let mainArr = [];//array displaying board
-let boardSize;//board size in vw
-let grass = [];//grass blocks
-let dirt = [];//dirt blocks
-let stones = [];
-let zombiePlace = [];
-let waterNumber;
-let lavaNumber;
-let zombieHitting = new Audio('../images/zombie\ hitting.m4a')
-let soundPlaying;
-let playerHealth = 10;
-let zombieHit = [new Audio('../images/zombie\ hit\ 1.m4a'), new Audio('../images/zombie\ hit\ 2.m4a'), new Audio('../images/zombie\ hit\ 3.m4a')];
-let zombieSound = [new Audio('../images/zombie\ sound\ 1.m4a'), new Audio('../images/zombie\ sound\ 2.m4a'), new Audio('../images/zombie\ sound\ 3.m4a')]
-let zombieOnScreen = false;
-let inventoryArr = []; let emptyInventory = new Map();
-let healthArr = []
-let choosen;//choosen inventory item
-let choosenElementToApply;//choosen element
-let choosenClass; let choosenElementOutLine
-let firstWater = [];//to pick up all the waters
-const invSpace = 9;//inv size 9 is the max in one row how ever wont be able to put in the top part if less
+
 createElements();
 let lastPlace = container.children.length
 assignEvenListeners()
