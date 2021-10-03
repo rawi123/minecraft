@@ -201,15 +201,15 @@ function createBoard() {
     }
     createObjects()
     setHealth()
-    // setTimeout(() => {
-    //     addZombie()
-    //     zombieOnScreen = true;
-    // }, 4000);
-    // setInterval(() => {
-    //     if (!zombieOnScreen) {
-    //         addZombie();
-    //     }
-    // }, 30000);
+    setTimeout(() => {
+        addZombie()
+        zombieOnScreen = true;
+    }, 4000);
+    setInterval(() => {
+        if (!zombieOnScreen) {
+            addZombie();
+        }
+    }, 30000);
 }
 function setHealth() {
     for (let i = 0; i < playerHealth; i++) {
