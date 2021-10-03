@@ -80,9 +80,8 @@ function assignEvenListeners() {//assign event for every button on the home scre
         intervalIsGoingOn = true;
         setTimeout(function () {
             healthBar.style.zIndex = "1";
-            console.log(healthBar.style.display);
             intervalIsGoingOn = false;
-        }, 2000);
+        }, 1000);
     });
 }
 function importBoard(flag = false) {//does all the job to start the game
