@@ -219,7 +219,7 @@ function addZombie() {
         for (let j = 0; j < mainArr[i].length; j++) {
             let classes = mainArr[i][j].getAttribute("class")
             if (classes.includes("grass") || classes.includes("dirt") || classes.includes("stone") || classes.includes("leaves") || classes.includes("log")) {
-                if (mainArr[i + 1][j] && mainArr[i + 2][j] && mainArr[i][j - 1]) {
+                if (mainArr[i + 1][j] && mainArr[i + 2][j]) {
                     if (mainArr[i + 1][j].getAttribute("class").includes("sky") && mainArr[i + 2][j].getAttribute("class").includes("sky"))
                         genarr.push([i + 1, j])
                 }
