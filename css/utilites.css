@@ -85,6 +85,9 @@ a{
         border-radius: 5px;
         padding: 8px;
     }
+    .body{
+        overflow: hidden;
+    }
 }
 @media screen and (max-height:800px){
     .health-bar{
