@@ -201,15 +201,15 @@ function createBoard() {
     }
     createObjects()
     setHealth()
-    setTimeout(() => {
-        addZombie()
-        zombieOnScreen = true;
-    }, 4000);
-    setInterval(() => {
-        if (!zombieOnScreen) {
-            addZombie();
-        }
-    }, 30000);
+    // setTimeout(() => {
+    //     addZombie()
+    //     zombieOnScreen = true;
+    // }, 4000);
+    // setInterval(() => {
+    //     if (!zombieOnScreen) {
+    //         addZombie();
+    //     }
+    // }, 30000);
 }
 function setHealth() {
     for (let i = 0; i < playerHealth; i++) {
@@ -333,8 +333,8 @@ function createStonesInDirt() {
             let randomPosition = Math.floor(Math.random() * dirt.length)
             let newStone = dirt[randomPosition]
             dirt.splice(dirt.indexOf(newStone), 1)
-            newStone.setAttribute("class", "stone")
             newStone=removeAllListeners(newStone)
+            newStone.setAttribute("class", "stone")
             reAddEvent(newStone)
         }
     }
@@ -539,8 +539,8 @@ function addToInv(element, item) {
     if (choosenClass === item) {
         let y = mainArr.find(val => val.includes(element))
         let x = y.indexOf(element)
-        y = mainArr.indexOf(y)
-        if (!accsess || mainArr[y + 1][x].getAttribute("class").includes("sky") || mainArr[y - 1][x].getAttribute("class").includes("sky") || mainArr[y][x + 1].getAttribute("class").includes("sky") || mainArr[y][x - 1].getAttribute("class").includes("sky")) {
+        y = mainArr.indexOf(y)//y height x width
+        if (!accsess || (y<mainArr.length-1&&mainArr[y + 1][x].getAttribute("class").includes("sky")) || (y>0&&mainArr[y - 1][x].getAttribute("class").includes("sky")) || (x<mainArr[0].length-1&&mainArr[y][x + 1].getAttribute("class").includes("sky")) || (x>0&&mainArr[y][x - 1].getAttribute("class").includes("sky"))) {
             flag = false;
             let check = objectInInventory(element.classList[0]);
             if (check) {
