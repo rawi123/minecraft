@@ -692,13 +692,14 @@ function applyWaterOrLava(element, type, oppositeType) {
             let toUse = mainArr[x - 1][y]
             let tempSec = 100;
             while ([...toUse.classList].includes("sky") || [...toUse.classList].includes(`${type}`) || [...toUse.classList].includes(`zombie-head`)) {
-                if ([...toUse.classList].includes(`zombie-head`)) {
+                if ([...toUse.classList].includes(`zombie-head`)&&[...toUse.classList].includes(`lava`)) {
                     zombieOnScreen = false
                     killZombie(tempSec)
                     break;
                 }
                 else {
-                    func(toUse, tempSec)
+                    if(![...toUse.classList].includes(`zombie-head`))
+                        func(toUse, tempSec)
                     tempSec += 120
                     x--;
                     toUse = mainArr[x - 1][y]
