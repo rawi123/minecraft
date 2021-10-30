@@ -71,11 +71,11 @@ function assignEvenListeners() {//assign event for every button on the home scre
         importBoard();
     })
 
-    extra.addEventListener("click", e => {
-        gameSize = [50, 15]//first width then height
-        boardSize = 150
-        importBoard();
-    })
+    // extra.addEventListener("click", e => {
+    //     gameSize = [50, 15]//first width then height
+    //     boardSize = 150
+    //     importBoard();
+    // })
 
     guide.addEventListener("click", e => {
         if (container.children[lastPlace] != undefined) {
@@ -227,15 +227,15 @@ function createBoard() {//create board adding the needed even listeners and appl
     }
     createObjects()
     setHealth()
-    setTimeout(() => {
-        addZombie()
-        zombieOnScreen = true;
-    }, 4000);
-    setInterval(() => {
-        if (!zombieOnScreen) {
-            addZombie();
-        }
-    }, 30000);
+    // setTimeout(() => {
+    //     addZombie()
+    //     zombieOnScreen = true;
+    // }, 4000);
+    // setInterval(() => {
+    //     if (!zombieOnScreen) {
+    //         addZombie();
+    //     }
+    // }, 10000);
 }
 function setHealth() {//create health bar
     for (let i = 0; i < playerHealth; i++) {
@@ -258,8 +258,14 @@ function addZombie() {//add zombie with health 4 on an avilable place if there a
         }
     }
     if (genarr.length > 0) {
-        let place = genarr[Math.floor(Math.random() * genarr.length)]
+        let num=Math.floor(Math.random() * genarr.length)
+        let place = genarr[num]
+        console.log(num,place);
+        console.log(mainArr[place[0]][place[1]]);
+        console.log(mainArr[place[0]+1][place[1]]);
         zombiePlace = place
+        console.log("place",place[0],place[1]);
+        console.log(mainArr);
         let legs = removeAllListeners(mainArr[place[0]][place[1]])
         let head = removeAllListeners(mainArr[place[0] + 1][place[1]])
         legs.setAttribute("class", "zombie-body")
@@ -273,6 +279,7 @@ function addZombie() {//add zombie with health 4 on an avilable place if there a
         zombieDammaging = setInterval(() => {
             playerGettingHit()
         }, 2000);
+        console.log(legs,head);
     }
 }
 function playerGettingHit() {//hit player apply healthbar animation and remove health if the player is dead alert and restart game
@@ -283,16 +290,17 @@ function playerGettingHit() {//hit player apply healthbar animation and remove h
     zombieHitting.play();
     playerHealth--;
     healthBar.lastChild.remove()
-    if (playerHealth === 0) {
-        window.alert("you lost!")
-        location.reload()
-    }
+    // if (playerHealth === 0) {
+    //     window.alert("you lost!")
+    //     location.reload()
+    // }
 }
 function killZombieAndPlaceMeat(){//as the function name says :) - zombie have a place saved in zombiePlace array
     let legs = removeAllListeners(mainArr[zombiePlace[0]][zombiePlace[1]])
     let head = removeAllListeners(mainArr[zombiePlace[0] + 1][zombiePlace[1]])
     legs.setAttribute("class", "meat")
     head.setAttribute("class", "sky")
+    console.log(head,"killzombie place met",legs);
     reAddEvent(head,true)
     reAddEvent(legs)
 }
